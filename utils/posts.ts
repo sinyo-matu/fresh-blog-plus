@@ -1,16 +1,20 @@
-import { extract } from "$std/encoding/front_matter.ts";
+import { extract } from "$std/front_matter/any.ts";
 
 export interface Post {
   slug: string;
   title: string;
   publishedAt: Date;
   content: string;
+  description?: string;
+  tags?: string;
 }
 
 export async function loadPost(slug: string): Promise<Post | null> {
   let text: string;
   try {
-    text = await Deno.readTextFile(`./data/posts/${decodeURIComponent(slug)}.md`);
+    text = await Deno.readTextFile(
+      `./data/posts/${decodeURIComponent(slug)}.md`
+    );
   } catch (err) {
     if (err instanceof Deno.errors.NotFound) {
       return null;
@@ -20,8 +24,12 @@ export async function loadPost(slug: string): Promise<Post | null> {
   const { attrs, body } = extract(text);
   const params = attrs as Record<string, string>;
   const publishedAt = new Date(params.published_at);
+  const description = params.description;
+  const tags = params.tags;
   return {
     slug,
+    description,
+    tags,
     title: params.title,
     publishedAt,
     content: body,
@@ -34,7 +42,7 @@ export async function listPosts(): Promise<Post[]> {
     const slug = entry.name.replace(".md", "");
     promises.push(loadPost(slug));
   }
-  const posts = await Promise.all(promises) as Post[];
+  const posts = (await Promise.all(promises)) as Post[];
   posts.sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
   return posts;
 }
