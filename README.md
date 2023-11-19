@@ -21,7 +21,7 @@ This is blog template using the awesome framework with many features included:
 - [x] SEO meta tags
 - [x] og image support [Fresh](https://fresh.deno.dev) from Deno.
 - [x] sitemap
-- [ ] RSS feed
+- [x] RSS feed
 
 ## Usage
 
