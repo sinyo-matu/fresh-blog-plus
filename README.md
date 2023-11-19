@@ -22,6 +22,7 @@ This is blog template using the awesome framework with many features included:
 - [x] og image support [Fresh](https://fresh.deno.dev) from Deno.
 - [x] sitemap
 - [x] RSS feed
+- [ ] Admin panel for managing posts
 
 ## Usage
 
